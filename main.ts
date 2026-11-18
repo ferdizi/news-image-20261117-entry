@@ -1,11 +1,12 @@
-// news-image-20261117: copy the poster drawn by build_poster.py to
-// /output/entry.png (or MAKEFUN_OUTPUT_DIR when running locally):
-//   mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
+// news-image-20261117 entrypoint.
+// The poster itself is drawn by build_poster.py; this program only
+// places the finished file where the harness expects it:
+//   /output/entry.png  (or $MAKEFUN_OUTPUT_DIR/entry.png locally)
 import { copyFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
-mkdirSync(outDir, { recursive: true });
-const here = dirname(fileURLToPath(import.meta.url));
-copyFileSync(join(here, "entry.png"), join(outDir, "entry.png"));
+const destination = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
+mkdirSync(destination, { recursive: true });
+const repoRoot = dirname(fileURLToPath(import.meta.url));
+copyFileSync(join(repoRoot, "entry.png"), join(destination, "entry.png"));
